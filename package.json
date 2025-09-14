@@ -1,11 +1,12 @@
 {
     "name": "@quoriel/api",
     "description": "ForgeScript extension for building fast and scalable HTTP APIs using uWebSockets.js",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "main": "src/main.js",
     "author": "Mlad (https://github.com/eolthar)",
     "license": "GPL-3.0",
     "scripts": {
+        "postinstall": "node src/cleanup.js",
         "docgen": "node src/docgen.js"
     },
     "dependencies": {

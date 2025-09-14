@@ -8,15 +8,17 @@ const state = {
     client: null,
     port: null,
     path: null,
-    socket: null
+    socket: null,
+    ssl: {}
 };
 
 function initializer(options = {}, client) {
-    state.app = uWS.App();
-    state.client = client;
-    state.port = +options.port || 3000;
-    state.path = join(process.cwd(), options.path);
+    state.path = options.path ? join(process.cwd(), options.path) : null;
     if (!state.path) return;
+    state.client = client;
+    state.ssl = options.ssl || {};
+    state.port = +options.port || 3000;
+    state.app = createApp();
     loadRoutes();
     startServer();
 }
@@ -27,9 +29,13 @@ function updateRoutes() {
         uWS.us_listen_socket_close(state.socket);
         state.socket = null;
     }
-    state.app = uWS.App();
+    state.app = createApp();
     loadRoutes();
     startServer();
+}
+
+function createApp() {
+    return Object.keys(state.ssl).length ? uWS.SSLApp(state.ssl) : uWS.App();
 }
 
 function loadRoutes() {
