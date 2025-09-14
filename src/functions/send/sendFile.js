@@ -38,7 +38,7 @@ const types = {
 exports.default = new NativeFunction({
     name: "$sendFile",
     description: "Send any file to be opened or downloaded in the browser",
-    version: "1.2.0",
+    version: "1.2.1",
     brackets: true,
     unwrap: true,
     args: [
@@ -75,7 +75,7 @@ exports.default = new NativeFunction({
                     response.onWritable(offset => {
                         response.cork(() => {
                             const sliced = buffer.subarray(offset);
-                            [ok, done] = response.tryEnd(sliced, sliced.length);
+                            [ok, done] = response.tryEnd(sliced, buffer.length);
                         });
                         return !done;
                     });
