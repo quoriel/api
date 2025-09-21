@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getQuery",
     description: "Get a query parameter value from the URL (decoded)",
-    version: "1.0.0",
+    version: "1.3.0",
     output: ArgType.Unknown,
     brackets: true,
     unwrap: true,
@@ -18,7 +18,6 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [key]) {
         const { request } = ctx.runtime.extras;
-        const value = request.getQuery(key);
-        return this.success(value);
+        return this.success(request.getQuery(key));
     }
 });

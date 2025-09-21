@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$sendText",
     description: "Send a text response",
-    version: "1.0.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -17,8 +17,7 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [text]) {
         const { response } = ctx.runtime.extras;
-        response.writeHeader("Content-Type", "text/plain");
-        response.end(text);
+        response.writeHeader("Content-Type", "text/plain").end(text);
         return this.success();
     }
 });

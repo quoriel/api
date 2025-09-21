@@ -3,9 +3,9 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getHeaders",
     description: "Returns all request headers",
-    version: "1.0.0",
+    version: "1.3.0",
     output: ArgType.Json,
-    unwrap: true,
+    unwrap: false,
     execute(ctx) {
         const { request } = ctx.runtime.extras;
         const headers = {};

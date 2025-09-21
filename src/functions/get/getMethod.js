@@ -3,12 +3,11 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getMethod",
     description: "Get the HTTP method of the request",
-    version: "1.0.0",
+    version: "1.3.0",
     output: ArgType.Unknown,
-    unwrap: true,
+    unwrap: false,
     execute(ctx) {
         const { request } = ctx.runtime.extras;
-        const value = request.getMethod();
-        return this.success(value);
+        return this.success(request.getMethod());
     }
 });

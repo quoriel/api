@@ -34,7 +34,7 @@ exports.default = new NativeFunction({
         let cookie = `${name}=; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
         if (path) cookie += `; Path=${path}`;
         if (domain) cookie += `; Domain=${domain}`;
-        response.writeHeader('Set-Cookie', cookie);
+        response.writeHeader("Set-Cookie", cookie);
         return this.success();
     }
 });

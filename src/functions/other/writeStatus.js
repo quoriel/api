@@ -24,7 +24,7 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [status, message]) {
         const { response } = ctx.runtime.extras;
-        response.writeStatus(message ? `${status} ${message}` : `${status}`);
+        response.writeStatus(message ? `${status} ${message}` : status);
         return this.success();
     }
 });

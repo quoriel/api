@@ -5,7 +5,7 @@ const { resolve, basename } = require("path");
 exports.default = new NativeFunction({
     name: "$sendAttachment",
     description: "Send a file as an attachment",
-    version: "1.2.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -30,15 +30,12 @@ exports.default = new NativeFunction({
         const fileName = name || basename(filePath);
         const info = await stat(filePath);
         response.cork(() => {
-            response.writeHeader("Content-Disposition", `attachment; filename="${fileName}"`);
-            response.writeHeader("Content-Type", "application/octet-stream");
-            response.writeHeader("Content-Length", info.size.toString());
+            response.writeHeader("Content-Disposition", `attachment; filename="${fileName}"`).writeHeader("Content-Type", "application/octet-stream").writeHeader("Content-Length", info.size.toString());
         });
         readFile(filePath, (err, buffer) => {
             if (err) {
                 response.cork(() => {
-                    response.writeStatus("404 Not Found");
-                    response.end("File not found");
+                    response.writeStatus("404 Not Found").end("File not found");
                 });
                 return;
             }

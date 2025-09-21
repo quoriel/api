@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$sendJson",
     description: "Send JSON response",
-    version: "1.0.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -17,8 +17,7 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [json]) {
         const { response } = ctx.runtime.extras;
-        response.writeHeader("Content-Type", "application/json");
-        response.end(JSON.stringify(json));
+        response.writeHeader("Content-Type", "application/json").end(JSON.stringify(json));
         return this.success();
     }
 });

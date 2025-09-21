@@ -39,7 +39,7 @@ exports.default = new NativeFunction({
         if (options.httpOnly) cookie += `; HttpOnly`;
         if (options.sameSite) cookie += `; SameSite=${options.sameSite}`;
         if (options.expires) cookie += `; Expires=${new Date(options.expires).toUTCString()}`;
-        response.writeHeader('Set-Cookie', cookie);
+        response.writeHeader("Set-Cookie", cookie);
         return this.success();
     }
 });

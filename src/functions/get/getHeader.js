@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getHeader",
     description: "Get a header value from the request",
-    version: "1.0.0",
+    version: "1.3.0",
     output: ArgType.Unknown,
     brackets: true,
     unwrap: true,
@@ -18,7 +18,6 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [key]) {
         const { request } = ctx.runtime.extras;
-        const value = request.getHeader(key.toLowerCase());
-        return this.success(value);
+        return this.success(request.getHeader(key.toLowerCase()));
     }
 });

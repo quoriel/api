@@ -38,7 +38,7 @@ const types = {
 exports.default = new NativeFunction({
     name: "$sendFile",
     description: "Send any file to be opened or downloaded in the browser",
-    version: "1.2.1",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -57,14 +57,12 @@ exports.default = new NativeFunction({
         const mime = types[ext] || "application/octet-stream";
         const info = await stat(filePath);
         response.cork(() => {
-            response.writeHeader("Content-Type", mime);
-            response.writeHeader("Content-Length", info.size.toString());
+            response.writeHeader("Content-Type", mime).writeHeader("Content-Length", info.size.toString());
         });
         readFile(filePath, (err, buffer) => {
             if (err) {
                 response.cork(() => {
-                    response.writeStatus("404 Not Found");
-                    response.end("File not found");
+                    response.writeStatus("404 Not Found").end("File not found");
                 });
                 return;
             }

@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$redirect",
     description: "Redirect to a specified URL",
-    version: "1.0.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -17,9 +17,7 @@ exports.default = new NativeFunction({
     ],
     execute(ctx, [url]) {
         const { response } = ctx.runtime.extras;
-        response.writeStatus("302");
-        response.writeHeader("Location", url);
-        response.end();
+        response.writeStatus("302").writeHeader("Location", url).end();
         return this.success();
     }
 });

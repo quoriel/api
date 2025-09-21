@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$sendJsonp",
     description: "Send JSONP response",
-    version: "1.2.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -27,8 +27,7 @@ exports.default = new NativeFunction({
         const query = request.getQuery();
         const params = Object.fromEntries(new URLSearchParams(query));
         const method = callback || params["callback"] || "callback";
-        response.writeHeader("Content-Type", "application/javascript");
-        response.end(`${method}(${JSON.stringify(json)})`);
+        response.writeHeader("Content-Type", "application/javascript").end(`${method}(${JSON.stringify(json)})`);
         return this.success();
     }
 });
