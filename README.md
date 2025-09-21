@@ -56,7 +56,7 @@ Access control mechanism for routes that can be configured globally or for indiv
 allowed: {
     merge: true,    // Merge route settings with global rules
     hosts: [],      // Array of allowed hostnames
-    ips: []         // Array of allowed IP addresses
+    ips: [],        // Array of allowed IP addresses
     headers: {}     // Required request headers
 }
 ```
@@ -79,4 +79,5 @@ module.exports = {
 ```
 
 ### Supported methods
+
 `GET`, `HEAD`, `TRACE`, `DELETE`, `OPTIONS`, `PATCH`, `PUT`, `POST`
