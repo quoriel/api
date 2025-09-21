@@ -10,7 +10,7 @@
         "docgen": "node src/docgen.js"
     },
     "dependencies": {
-        "@quoriel/api": "github:quoriel/api",
+        "@tryforge/forgescript": "^2.4.1",
         "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.52.0"
     }
 }

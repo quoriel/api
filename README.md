@@ -16,7 +16,7 @@ const client = new ForgeClient({
         new QuorielApi({
             port: 3000,        // HTTP server port (default: 3000)
             path: "routes",    // Routes directory path
-            ssl: {             // HTTPS configuration (optional)
+            ssl: {             // SSL options for HTTPS (optional)
                 cert_file_name: "cert.pem",
                 key_file_name: "key.pem"
             },
@@ -79,5 +79,4 @@ module.exports = {
 ```
 
 ### Supported methods
-
 `GET`, `HEAD`, `TRACE`, `DELETE`, `OPTIONS`, `PATCH`, `PUT`, `POST`

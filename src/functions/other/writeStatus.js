@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$writeStatus",
     description: "Set the HTTP status code for the response",
-    version: "1.2.0",
+    version: "1.3.0",
     brackets: true,
     unwrap: true,
     args: [
