@@ -1,202 +1,203 @@
-const HEX_NOPAD = new Array(256);
-const HEX_PAD = new Array(256);
+const DEC = new Array(256);
+const HEX16 = new Array(65536);
 
 for (let i = 0; i < 256; i++) {
-    const h = i.toString(16);
-    HEX_NOPAD[i] = h;
-    HEX_PAD[i] = h.length === 1 ? "0" + h : h;
+    DEC[i] = "" + i;
+}
+for (let i = 0; i < 65536; i++) {
+    HEX16[i] = i.toString(16);
 }
 
-function convertIP(buffer) {
-    const buf = Buffer.from(buffer);
-    if (buf.length === 4) {
-        return `${buf[0]}.${buf[1]}.${buf[2]}.${buf[3]}`;
+function convertIP(bu) {
+    const fm = Buffer.from(bu);
+    const lh = fm.length;
+    if (lh === 4) {
+        return DEC[fm[0]] + "." + DEC[fm[1]] + "." + DEC[fm[2]] + "." + DEC[fm[3]];
     }
-    if (buf.length !== 16) {
+    if (lh !== 16) {
         return null;
     }
-    if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0 && buf[3] === 0 && buf[4] === 0 && buf[5] === 0 && buf[6] === 0 && buf[7] === 0 && buf[8] === 0 && buf[9] === 0 && buf[10] === 0xff && buf[11] === 0xff) {
-        return `${buf[12]}.${buf[13]}.${buf[14]}.${buf[15]}`;
+    if (fm[0] === 0 && fm[1] === 0 && fm[2] === 0 && fm[3] === 0 && fm[4] === 0 && fm[5] === 0 && fm[6] === 0 && fm[7] === 0 && fm[8] === 0 && fm[9] === 0 && fm[10] === 0xff && fm[11] === 0xff) {
+        return DEC[fm[12]] + "." + DEC[fm[13]] + "." + DEC[fm[14]] + "." + DEC[fm[15]];
     }
-    const p0 = (buf[0] << 8) | buf[1];
-    const p1 = (buf[2] << 8) | buf[3];
-    const p2 = (buf[4] << 8) | buf[5];
-    const p3 = (buf[6] << 8) | buf[7];
-    const p4 = (buf[8] << 8) | buf[9];
-    const p5 = (buf[10] << 8) | buf[11];
-    const p6 = (buf[12] << 8) | buf[13];
-    const p7 = (buf[14] << 8) | buf[15];
-    let bestStart = -1,
-        bestLen = 0;
-    let curStart = -1,
-        curLen = 0;
+    const p0 = (fm[0] << 8) | fm[1];
+    const p1 = (fm[2] << 8) | fm[3];
+    const p2 = (fm[4] << 8) | fm[5];
+    const p3 = (fm[6] << 8) | fm[7];
+    const p4 = (fm[8] << 8) | fm[9];
+    const p5 = (fm[10] << 8) | fm[11];
+    const p6 = (fm[12] << 8) | fm[13];
+    const p7 = (fm[14] << 8) | fm[15];
+    let bs = -1,
+        bl = 0;
+    let cs = -1,
+        cl = 0;
     if (p0 === 0) {
-        if (curStart === -1) curStart = 0;
-        curLen++;
+        if (cs === -1) cs = 0;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p1 === 0) {
-        if (curStart === -1) curStart = 1;
-        curLen++;
+        if (cs === -1) cs = 1;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p2 === 0) {
-        if (curStart === -1) curStart = 2;
-        curLen++;
+        if (cs === -1) cs = 2;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p3 === 0) {
-        if (curStart === -1) curStart = 3;
-        curLen++;
+        if (cs === -1) cs = 3;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p4 === 0) {
-        if (curStart === -1) curStart = 4;
-        curLen++;
+        if (cs === -1) cs = 4;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p5 === 0) {
-        if (curStart === -1) curStart = 5;
-        curLen++;
+        if (cs === -1) cs = 5;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p6 === 0) {
-        if (curStart === -1) curStart = 6;
-        curLen++;
+        if (cs === -1) cs = 6;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
     if (p7 === 0) {
-        if (curStart === -1) curStart = 7;
-        curLen++;
+        if (cs === -1) cs = 7;
+        cl++;
     } else {
-        if (curLen > bestLen) {
-            bestStart = curStart;
-            bestLen = curLen;
+        if (cl > bl) {
+            bs = cs;
+            bl = cl;
         }
-        curStart = -1;
-        curLen = 0;
+        cs = -1;
+        cl = 0;
     }
-    if (curLen > bestLen) {
-        bestStart = curStart;
-        bestLen = curLen;
+    if (cl > bl) {
+        bs = cs;
+        bl = cl;
     }
-    if (bestLen === 8) return "::";
-    if (bestLen < 2) bestStart = -1;
-    const out = new Array(9);
-    let oi = 0;
-    let skipped = false;
-    const cs = bestStart,
-        ce = bestStart + bestLen;
-    if (!(bestStart !== -1 && 0 >= cs && 0 < ce)) {
-        const hi = p0 >>> 8,
-            lo = p0 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bl === 8) return "::";
+    if (bl < 2) bs = -1;
+    let re = "";
+    let ac = false;
+    let cd = false;
+    const ce = bs + bl;
+    if (bs === 0) {
+        re = "::";
+        cd = true;
+        ac = true;
     }
-    if (!(bestStart !== -1 && 1 >= cs && 1 < ce)) {
-        const hi = p1 >>> 8,
-            lo = p1 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 0 < bs || 0 >= ce) {
+        re += HEX16[p0];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 2 >= cs && 2 < ce)) {
-        const hi = p2 >>> 8,
-            lo = p2 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 1 < bs || 1 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p1];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 3 >= cs && 3 < ce)) {
-        const hi = p3 >>> 8,
-            lo = p3 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 2 < bs || 2 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p2];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 4 >= cs && 4 < ce)) {
-        const hi = p4 >>> 8,
-            lo = p4 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 3 < bs || 3 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p3];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 5 >= cs && 5 < ce)) {
-        const hi = p5 >>> 8,
-            lo = p5 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 4 < bs || 4 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p4];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 6 >= cs && 6 < ce)) {
-        const hi = p6 >>> 8,
-            lo = p6 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 5 < bs || 5 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p5];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    if (!(bestStart !== -1 && 7 >= cs && 7 < ce)) {
-        const hi = p7 >>> 8,
-            lo = p7 & 0xff;
-        out[oi++] = hi === 0 ? HEX_NOPAD[lo] : HEX_NOPAD[hi] + HEX_PAD[lo];
-    } else if (!skipped) {
-        out[oi++] = "";
-        skipped = true;
+    if (bs === -1 || 6 < bs || 6 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p6];
+        ac = true;
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+        cd = true;
     }
-    let result = out.slice(0, oi).join(":");
-    if (bestStart === 0) result = ":" + result;
-    else if (bestStart !== -1 && bestStart + bestLen === 8) result += ":";
-    return result;
+    if (bs === -1 || 7 < bs || 7 >= ce) {
+        if (ac) re += ":";
+        re += HEX16[p7];
+    } else if (bs !== -1 && !cd) {
+        re += ":";
+    }
+    if (bs !== -1 && ce === 8) re += ":";
+    return re;
 }
 
 module.exports = { convertIP };

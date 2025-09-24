@@ -3,7 +3,7 @@ A high-performance extension for ForgeScript that provides a reliable and scalab
 
 ## Installation
 ```
-npm i github:quoriel/api uNetworking/uWebSockets.js#v20.52.0
+npm i @quoriel/api uNetworking/uWebSockets.js#v20.52.0
 ```
 
 ## Connection
@@ -79,4 +79,4 @@ module.exports = {
 ```
 
 ### Supported methods
-`GET`, `HEAD`, `TRACE`, `DELETE`, `OPTIONS`, `PATCH`, `PUT`, `POST`
+`GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `OPTIONS`, `HEAD`, `TRACE`, `CONNECT`, `ANY`
