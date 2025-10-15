@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$writeHeader",
     description: "Set an HTTP header for the response",
-    version: "1.0.0",
+    version: "1.5.0",
     brackets: true,
     unwrap: true,
     args: [
@@ -23,8 +23,7 @@ exports.default = new NativeFunction({
         }
     ],
     execute(ctx, [key, value]) {
-        const { response } = ctx.runtime.extras;
-        response.writeHeader(key, value);
+        ctx.runtime.extras.response.writeHeader(key, value);
         return this.success();
     }
 });

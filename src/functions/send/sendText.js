@@ -16,8 +16,7 @@ exports.default = new NativeFunction({
         }
     ],
     execute(ctx, [text]) {
-        const { response } = ctx.runtime.extras;
-        response.writeHeader("Content-Type", "text/plain").end(text);
+        ctx.runtime.extras.response.writeHeader("Content-Type", "text/plain").end(text);
         return this.success();
     }
 });

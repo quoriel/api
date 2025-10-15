@@ -1,25 +1,36 @@
 const DEC = new Array(256);
 const HEX16 = new Array(65536);
+let cache = null;
+let max = 0;
 
-for (let i = 0; i < 256; i++) {
-    DEC[i] = "" + i;
-}
-for (let i = 0; i < 65536; i++) {
-    HEX16[i] = i.toString(16);
+for (let i = 0; i < 256; i++) DEC[i] = "" + i;
+for (let i = 0; i < 65536; i++) HEX16[i] = i.toString(16);
+
+function cacheIP(count) {
+    cache = new Map();
+    max = +count || 10000;
 }
 
-function convertIP(bu) {
-    const fm = Buffer.from(bu);
+function convertIP(buffer) {
+    const from = Buffer.from(buffer);
+    if (!cache) return parseIP(from);
+    const key = from.toString("hex");
+    let result = cache.get(key);
+    if (result) return result;
+    result = parseIP(from);
+    if (cache.size >= max) {
+        const first = cache.keys().next().value;
+        cache.delete(first);
+    }
+    cache.set(key, result);
+    return result;
+}
+
+function parseIP(fm) {
     const lh = fm.length;
-    if (lh === 4) {
-        return DEC[fm[0]] + "." + DEC[fm[1]] + "." + DEC[fm[2]] + "." + DEC[fm[3]];
-    }
-    if (lh !== 16) {
-        return null;
-    }
-    if (fm[0] === 0 && fm[1] === 0 && fm[2] === 0 && fm[3] === 0 && fm[4] === 0 && fm[5] === 0 && fm[6] === 0 && fm[7] === 0 && fm[8] === 0 && fm[9] === 0 && fm[10] === 0xff && fm[11] === 0xff) {
-        return DEC[fm[12]] + "." + DEC[fm[13]] + "." + DEC[fm[14]] + "." + DEC[fm[15]];
-    }
+    if (lh === 4) return DEC[fm[0]] + "." + DEC[fm[1]] + "." + DEC[fm[2]] + "." + DEC[fm[3]];
+    if (lh !== 16) return null;
+    if (fm[0] === 0 && fm[1] === 0 && fm[2] === 0 && fm[3] === 0 && fm[4] === 0 && fm[5] === 0 && fm[6] === 0 && fm[7] === 0 && fm[8] === 0 && fm[9] === 0 && fm[10] === 0xff && fm[11] === 0xff) return DEC[fm[12]] + "." + DEC[fm[13]] + "." + DEC[fm[14]] + "." + DEC[fm[15]];
     const p0 = (fm[0] << 8) | fm[1];
     const p1 = (fm[2] << 8) | fm[3];
     const p2 = (fm[4] << 8) | fm[5];
@@ -200,4 +211,4 @@ function convertIP(bu) {
     return re;
 }
 
-module.exports = { convertIP };
+module.exports = { convertIP, cacheIP };

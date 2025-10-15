@@ -7,12 +7,13 @@ try {
 } catch {
     return;
 }
-const keep = `uws_${process.platform}_${process.arch}_${process.versions.modules}.node`;
+const keep = "uws_" + process.platform + "_" + process.arch + "_" + process.versions.modules + ".node";
 if (!existsSync(join(directory, keep))) {
     return;
 }
 const files = readdirSync(directory);
-files.forEach(file => {
+for (let i = 0; i < files.length; i++) {
+    const file = files[i];
     if (file.startsWith("uws_") && file.endsWith(".node")) {
         if (file !== keep) {
             const path = join(directory, file);
@@ -23,4 +24,4 @@ files.forEach(file => {
             }
         }
     }
-});
+}

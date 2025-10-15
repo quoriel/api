@@ -2,8 +2,8 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 
 exports.default = new NativeFunction({
     name: "$getParameter",
-    description: "Get a URL parameter value by index or name",
-    version: "1.0.0",
+    description: "Get a URL parameter value",
+    version: "1.5.0",
     output: ArgType.Unknown,
     brackets: true,
     unwrap: true,
@@ -17,14 +17,6 @@ exports.default = new NativeFunction({
         }
     ],
     execute(ctx, [param]) {
-        const { request } = ctx.runtime.extras;
-        let value;
-        const index = parseInt(param);
-        if (!isNaN(index)) {
-            value = request.getParameter(index);
-        } else {
-            value = request.getParameter(param);
-        }
-        return this.success(value);
+        return this.success(ctx.runtime.extras.request.getParameter(isNaN(param) ? param : +param));
     }
 });

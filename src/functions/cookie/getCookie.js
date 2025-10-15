@@ -3,7 +3,7 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getCookie",
     description: "Get a cookie value from the request",
-    version: "1.1.0",
+    version: "1.5.0",
     output: ArgType.Unknown,
     brackets: true,
     unwrap: true,
@@ -17,16 +17,19 @@ exports.default = new NativeFunction({
         }
     ],
     execute(ctx, [name]) {
-        const { request } = ctx.runtime.extras;
-        const header = request.getHeader("cookie");
-        if (!header) {
-            return this.success();
+        const header = ctx.runtime.extras.request.getHeader("cookie");
+        if (!header) return this.success();
+        const parts = header.split(";");
+        for (let i = 0; i < parts.length; i++) {
+            const cookie = parts[i].trim();
+            const index = cookie.indexOf("=");
+            if (index === -1) continue;
+            const key = cookie.substring(0, index);
+            if (key === name) {
+                const value = cookie.substring(index + 1);
+                return this.success(decodeURIComponent(value));
+            }
         }
-        const cookies = header.split(";").reduce((acc, cookie) => {
-            const [key, ...rest] = cookie.trim().split("=");
-            acc[key] = decodeURIComponent(rest.join("=") || "");
-            return acc;
-        }, {});
-        return this.success(cookies[name]);
+        return this.success();
     }
 });

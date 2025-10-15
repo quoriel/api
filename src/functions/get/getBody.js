@@ -3,14 +3,13 @@ const { NativeFunction, ArgType } = require("@tryforge/forgescript");
 exports.default = new NativeFunction({
     name: "$getBody",
     description: "Gets the request body from POST, PUT, PATCH requests",
-    version: "1.3.0",
+    version: "1.5.0",
     output: ArgType.Unknown,
     unwrap: false,
     async execute(ctx) {
-        const { response } = ctx.runtime.extras;
-        const body = await new Promise(resolve => {
+        return this.success(await new Promise(resolve => {
             const chunks = [];
-            response.onData((chunk, isLast) => {
+            ctx.runtime.extras.response.onData((chunk, isLast) => {
                 chunks.push(new Uint8Array(chunk).slice());
                 if (isLast) {
                     const length = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
@@ -24,7 +23,6 @@ exports.default = new NativeFunction({
                     resolve(result);
                 }
             });
-        });
-        return this.success(body);
+        }));
     }
 });
