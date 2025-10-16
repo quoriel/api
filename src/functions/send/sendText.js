@@ -19,5 +19,4 @@ exports.default = new NativeFunction({
         ctx.runtime.extras.response.writeHeader("Content-Type", "text/plain").end(text);
         return this.success();
     }
-
 });
